@@ -11,10 +11,9 @@ import DialogContent from '@mui/material/DialogContent';
 import VentanaDelitos from './ventanaDelitos'
 
 export default function VentanaDetalles(props) {
-    const { onClose, open } = props;
+    const { onClose, open, rows, selectedId} = props;
     const [ openDelitos, setOpenDelitos ] = React.useState(false);
-    const [rating, setRating] = React.useState(0);
-    
+    const [rating, setRating] = React.useState(rows[selectedId].rating);
     const handleClose = () => {
         onClose();
     };
@@ -25,9 +24,11 @@ export default function VentanaDetalles(props) {
 
     const openVentanaDelitos = () => {
         setOpenDelitos(true)
-    }
-
-    
+    } 
+    const actualizarRating = (rating) => {
+        setRating(rating)
+        rows[selectedId].rating = rating
+    }   
     
     return (
         <>
@@ -41,9 +42,7 @@ export default function VentanaDetalles(props) {
                         Transcripción 
                     </Typography>
                     <Box sx={{ margin: 1, boxShadow: 1, borderRadius: 2, p: 2, }}>
-                        Si buscamos en Internet por “programación”, encontraremos más de 72 millones de resultados. 
-                        Si hacemos lo mismo con “ingeniería de software”, también hay más de 12 millones de resultados.  
-                        Es razonable pensar que la programación es un término más genérico que la ingeniería de software.
+                        {rows[selectedId].transcripcion}
                     </Box>
                     <Box sx={{boxShadow:2, margin: 2, display: 'flex', flexDirection: 'row', justifyContent: 'space-evenly'}}>
                         <Typography  sx={{fontWeight: 'bold'}} align="left" color="purple"> 
@@ -67,9 +66,9 @@ export default function VentanaDetalles(props) {
                         </Typography>
                         <Rating
                             name="simple-controlled"
-                            value={rating}
+                            value={rows[selectedId].rating}
                             onChange={(event, newValue) => {
-                            setRating(newValue);
+                                actualizarRating(newValue);
                             }}
                         />
                     </Box>  
@@ -79,6 +78,9 @@ export default function VentanaDetalles(props) {
             <VentanaDelitos 
                 open={openDelitos}
                 onClose={handleCloseVentanaDelitos}
+                delitos={rows[selectedId].delitosCometidos}
+                rows={rows}
+                selectedId={selectedId}
             />
         </>
     );
