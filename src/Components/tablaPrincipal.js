@@ -48,17 +48,7 @@ const rows = [
   { id: 4, codigo: '74176012', penitenciaria: 'Chincha', fecha: '03/01/2023', destino: '976856322' , 
     rating:1,delitosCometidos:["sicariato","trafico"],transcripcion: "llamada penitenciaría chincha para aceptar no cuelgue no no buenos días mi amor buenos días mi amor a las 5 me tienes no mi amor sino que estaba esperando en la cola de la llamada tu cola ay mi amor te amo mucho ayer te puedo llamar sí todo esperando acá para llamar YY ya pues le dije a concretar en 52 ella esté a qué hora tienes ahí alta 53 sí ay acatamiento se pelean hasta por un minuto quieren hablar",
   url:"http://docs.google.com/uc?export=open&id=1V2l3neglxNLQbtqCxgH3Rcm0M1zbywIc"},
- /* { id: 5, codigo: '832920747', penitenciaria: 'Huaral', fecha: '04/01/2023', destino: '991883443' , 
-    rating:2,delitosCometidos:[2,1],transcripcion: "dfgd"},
-  { id: 6, codigo: '020873289', penitenciaria: 'Huaraz', fecha: '20/01/2023', destino: '990786533' , 
-    rating:4,delitosCometidos:[2,3],transcripcion: "dfgd"},
-  { id: 7, codigo: '976820234', penitenciaria: 'Ancon', fecha: '07/01/2023', destino: '987654321' , 
-    rating:3,delitosCometidos:[4,1],transcripcion: "dfgd"},
-  { id: 8, codigo: '082649203', penitenciaria: 'Ica', fecha: '28/01/2023', destino: '990077662' , 
-    rating:2,delitosCometidos:[2,3],transcripcion: "dfg"},
-  { id: 9, codigo: '763739228', penitenciaria: 'Chincha', fecha: '31/01/2023', destino: '985467231' , 
-    rating:5,delitosCometidos:[2,1,4],transcripcion: "dfgdf"},*/
-];
+]; 
 
 
 export default function DataTable() {
@@ -71,12 +61,56 @@ export default function DataTable() {
         setOpen(false);
     };
 
-  /*   const openVentanaEmergente = (props) => {
-        setSelectedId(props-1);
-        console.log("selectedId: ",selectedId);
+    // devolvemos la transcripcion
+    const getTranscription = (position) => {
+      try{
+        return rows[position].transcripcion;
 
-        setOpen(true);
-    }  */
+      } catch(e){
+        console.log("error: ", e);
+        return ""
+      }
+    }
+
+    // devolvemos el rating de la fila seleccionada
+    const getRating = (position) => {
+      try{
+        return rows[position].rating;
+
+      } catch(e){
+        console.log("error: ", e);
+        return 0
+      }
+    }
+
+    // actulizamos el rating de la fila seleccionada
+    const setRating = (position,rating) => {
+      try{
+        rows[position].rating=rating 
+      } catch(e) {
+        console.log("error: ", e);
+      }      
+    }
+
+    // obtenemos el delito de la fila seleccionada
+    const getCrime = (position) => {
+      try{
+        return rows[position].delitosCometidos;
+
+      } catch(e){
+        console.log("error: ", e);
+        return []
+      }
+    }
+
+    // actulizamos el delito de la fila seleccionada
+    const setCrime = (position,crimes) => {
+      try{
+        rows[position].delitosCometidos = crimes 
+      } catch(e) {
+        console.log("error: ", e);
+      }      
+    }
 
     const handleOnCellClick = (params) => {
       if(params.field==="Audio"){
@@ -120,6 +154,11 @@ export default function DataTable() {
                 onClose={handleClose}
                 rows={rows}
                 selectedId={selectedId}
+                getRating={getRating}
+                setRating={setRating}
+                getTranscription={getTranscription}
+                getCrime={getCrime}
+                setCrime={setCrime}
             />
             </Box>
         </Stack>       

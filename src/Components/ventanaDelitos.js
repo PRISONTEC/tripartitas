@@ -8,15 +8,17 @@ import DialogContent from '@mui/material/DialogContent';
 import FormControlLabel from '@mui/material/FormControlLabel';
 
 export default function VentanaDelitos(props) {
-    const { onClose, open, rows, selectedId} = props;
+    const { onClose, open, selectedId, getCrime, setCrime} = props;
+    // funcion que retorna true o false si el delito fue cometido o no
     const isChecked = (value) => {
-        var index = (rows[selectedId].delitosCometidos).indexOf(value)
+        var index = getCrime(selectedId).indexOf(value)
         if(index < 0){
             return false;
         } else {
             return true;
         }
     };
+    // true or false
     const [robo, setRobo] = React.useState(isChecked("robo"));
     const [sicariato, setSicariato] = React.useState(isChecked("sicariato"));
     const [trafico, setTrafico] = React.useState(isChecked("trafico"));
@@ -36,11 +38,15 @@ export default function VentanaDelitos(props) {
         } else if (value==="estupefacientes"){
             setEstupefacientes(!estupefacientes)
         }
-        var index = (rows[selectedId].delitosCometidos).indexOf(value)
+
+        var crimes = getCrime(selectedId);
+        var index = crimes.indexOf(value)
         if(index < 0){
-            rows[selectedId].delitosCometidos.push(value)
+            crimes.push(value)
+            setCrime(selectedId,crimes)
         } else {
-            delete(rows[selectedId].delitosCometidos[index])
+            delete(crimes[index])
+            setCrime(selectedId,crimes)
         }
     };
 

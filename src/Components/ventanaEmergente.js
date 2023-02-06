@@ -11,9 +11,20 @@ import DialogContent from '@mui/material/DialogContent';
 import VentanaDelitos from './ventanaDelitos'
 
 export default function VentanaDetalles(props) {
-    const { onClose, open, rows, selectedId} = props;
+    const { 
+        onClose, 
+        open, 
+        rows, 
+        selectedId, 
+        getRating, 
+        setRating, 
+        getTranscription,
+        getCrime,
+        setCrime
+    } = props;
     const [ openDelitos, setOpenDelitos ] = React.useState(false);
-    const [rating, setRating] = React.useState(rows[selectedId].rating);
+    const [rating, setRatingChild] = React.useState(getRating(selectedId));
+
     const handleClose = () => {
         onClose();
     };
@@ -26,8 +37,8 @@ export default function VentanaDetalles(props) {
         setOpenDelitos(true)
     } 
     const actualizarRating = (rating) => {
-        setRating(rating)
-        rows[selectedId].rating = rating
+        setRatingChild(rating)
+        setRating(selectedId,rating)
     }   
     
     return (
@@ -42,7 +53,7 @@ export default function VentanaDetalles(props) {
                         Transcripción 
                     </Typography>
                     <Box sx={{ margin: 1, boxShadow: 1, borderRadius: 2, p: 2, }}>
-                        {rows[selectedId].transcripcion}
+                        {getTranscription(selectedId)}
                     </Box>
                     <Box sx={{boxShadow:2, margin: 2, display: 'flex', flexDirection: 'row', justifyContent: 'space-evenly'}}>
                         <Typography  sx={{fontWeight: 'bold'}} align="left" color="purple"> 
@@ -66,7 +77,7 @@ export default function VentanaDetalles(props) {
                         </Typography>
                         <Rating
                             name="simple-controlled"
-                            value={rows[selectedId].rating}
+                            value={getRating(selectedId)}
                             onChange={(event, newValue) => {
                                 actualizarRating(newValue);
                             }}
@@ -78,9 +89,10 @@ export default function VentanaDetalles(props) {
             <VentanaDelitos 
                 open={openDelitos}
                 onClose={handleCloseVentanaDelitos}
-                delitos={rows[selectedId].delitosCometidos}
                 rows={rows}
                 selectedId={selectedId}
+                getCrime={getCrime}
+                setCrime={setCrime}
             />
         </>
     );
